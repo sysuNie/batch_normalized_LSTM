@@ -1,2 +1,1 @@
-# batch_normalization_LSTM
-# batch normalization LSTM
+A Implementation of batch normalization LSTM in pytorch
