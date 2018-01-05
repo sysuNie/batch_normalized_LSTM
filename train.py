@@ -49,6 +49,14 @@ test_dataset = datasets.MNIST(
                                       transforms.ToTensor(),
                                       transforms.Normalize((0.1307,), (0.3081,))
                                       ]), download=True)
+train_loader = DataLoader(dataset=train_dataset,
+                          batch_size=args.batch_size,
+                          shuffle=True, pin_memory=True)
+
+test_dataset = DataLoader(dataset=test_dataset,
+                          batch_size=args.batch_size,
+                          shuffle=True, pin_memory=True)
+
 model_name = args.model
 if model_name == 'bnlstm':
     model = LSTM(cell_class=BNLSTMCell, input_size=28,
@@ -64,4 +72,5 @@ loss_fn = nn.CrossEntropyLoss()
 params = list(model.parameters()) + list(fc.parameters())
 optimizer = optim.SGD(params=params, lr=1e-3, momentum=0.9)
 
+for epoch in range(args.epoches):
 
