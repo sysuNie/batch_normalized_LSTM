@@ -93,3 +93,9 @@ for epoch in range(args.epoches):
         loss = computer_loss(data=images, labels=labels)
         loss.backend()
         optimizer.step()
+
+        if(i+1) % 100 == 0:
+            if (i + 1) % 100 == 0:
+                print ('Epoch [%d/%d],Iter [%d/%d] Loss: %.4f'
+                       % (epoch + 1, args.epoches, i + 1, len(train_dataset) // args.batch_size,
+                          loss.data[0]))
