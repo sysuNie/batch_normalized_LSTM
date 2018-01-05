@@ -68,9 +68,18 @@ else:
     raise ValueError
 
 fc = nn.Linear(in_features=args.hidden_size, out_features=10)
-loss_fn = nn.CrossEntropyLoss()
+criterion = nn.CrossEntropyLoss()
 params = list(model.parameters()) + list(fc.parameters())
 optimizer = optim.SGD(params=params, lr=1e-3, momentum=0.9)
 
-for epoch in range(args.epoches):
+def computer_loss_accuracy(data, label):
+    h0 = Variable(data.data.new(data.size(0), args.hidden_size).normal_(0, 0.1))
+    c0 = Variable(data.data.new(data.size(0), args.hidden_size).normal_(0, 0.1))
+    hx = (h0, c0)
+
+    _, (h_n, _) = model(input_=data, hx=hx)
+    logits = fc(h_n[0])
+    loss = criterion(input=logits, target=label)
+    accuracy = ()
+
 
