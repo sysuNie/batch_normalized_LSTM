@@ -1,7 +1,5 @@
 # -*- coding: UTF-8 -*-
 import argparse
-import os
-from datetime import datetime
 
 import torch
 from torch import nn, optim
@@ -92,6 +90,7 @@ for epoch in range(args.epoches):
         optimizer.zero_grad()
         loss = computer_loss(data=images, labels=labels)
         loss.backend()
+        clip_grad_norm(parameters=params, max_norm=1)
         optimizer.step()
 
         if(i+1) % 100 == 0:
