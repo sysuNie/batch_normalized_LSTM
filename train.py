@@ -72,7 +72,7 @@ criterion = nn.CrossEntropyLoss()
 params = list(model.parameters()) + list(fc.parameters())
 optimizer = optim.SGD(params=params, lr=1e-3, momentum=0.9)
 
-def computer_loss_accuracy(data, label):
+def computer_loss(data, label):
     h0 = Variable(data.data.new(data.size(0), args.hidden_size).normal_(0, 0.1))
     c0 = Variable(data.data.new(data.size(0), args.hidden_size).normal_(0, 0.1))
     hx = (h0, c0)
@@ -80,6 +80,16 @@ def computer_loss_accuracy(data, label):
     _, (h_n, _) = model(input_=data, hx=hx)
     logits = fc(h_n[0])
     loss = criterion(input=logits, target=label)
-    accuracy = ()
+    return loss
 
-
+for epoch in range(args.epoches):
+    for i, (images, labels) in enumerate(train_loader):
+        images = Variable(images)
+        labels = Variable(labels)
+        if args.cuda():
+            images = Variable(images).cuda()
+            labels = Variable(labels).cuda()
+        optimizer.zero_grad()
+        loss = computer_loss(data=images, labels=labels)
+        loss.backend()
+        optimizer.step()
